@@ -1,0 +1,46 @@
+{
+  "compilerOptions": {
+    // --- CÁC THAY ĐỔI QUAN TRỌNG ---
+    "baseUrl": ".", // Thêm dòng này
+    "paths": { // Thêm khối này
+      "@/*": [
+        "./*"
+      ]
+    },
+    "moduleResolution": "bundler", // Sửa từ "node" thành "bundler"
+    "forceConsistentCasingInFileNames": true,
+    // --- CÁC THIẾT LẬP KHÁC ---
+    "target": "ES2017",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "incremental": true,
+    "module": "esnext",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
+  },
+  "include": [
+    "next-env.d.ts",
+    ".next/types/**/*.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.js", // Bao gồm tất cả các file .js
+    "**/*.jsx" // Bao gồm tất cả các file .jsx
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
