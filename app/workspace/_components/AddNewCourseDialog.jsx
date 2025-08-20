@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { use, useState } from 'react'
 import {
     Dialog,
     DialogContent,
@@ -18,11 +18,14 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import { Button } from '@/components/ui/button'
-import { Sparkle } from 'lucide-react'
-
+import { Loader2Icon, Sparkle } from 'lucide-react'
+import axios from 'axios'
+import { v4 as uuidv4 } from 'uuid';
+import { useRouter } from 'next/navigation'
 
 function AddNewCourseDialog({ children }) {
 
+    const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
         name: '',
         description: '',
@@ -31,6 +34,7 @@ function AddNewCourseDialog({ children }) {
         level: '',
         category: ''
     });
+    const router = useRouter();
 
     const onHandleInputChange = (field, value) => {
         setFormData(prev => ({
@@ -41,10 +45,23 @@ function AddNewCourseDialog({ children }) {
 
     }
 
-    const onGenerate = () => {
+    const onGenerate = async () => {
         console.log('Generating course with data:', formData);
+        const courseId = uuidv4(); // Generate a unique ID for the course
+        try {
+            setLoading(true);
+            const result = await axios.post('/api/generate-course-layout', {
+                ...formData,
+                courseId: courseId
+            })
+            console.log(result.data);
+            setLoading(false);
+            router.push('/workspace/edit-course/' + result.data?.courseId);
+        } catch (error) {
+            console.error('Error generating course:', error);
+            setLoading(false);
+        }
     }
-
 
     return (
         <Dialog>
@@ -95,7 +112,9 @@ function AddNewCourseDialog({ children }) {
 
                             <div className='mt-5'>
                                 <Button className={'w-full'}
-                                    onClick={onGenerate}><Sparkle />Generate Course</Button>
+                                    onClick={onGenerate} disabled={loading}>
+                                    {loading ? <Loader2Icon className='animate-spin' /> :
+                                        < Sparkle />}Generate Course</Button>
                             </div>
                         </div>
                     </DialogDescription>
