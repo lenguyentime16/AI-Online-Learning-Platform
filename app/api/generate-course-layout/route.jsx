@@ -33,6 +33,9 @@ Schema:
 }
 
 User Input:`;
+export const ai = new GoogleGenAI({
+    apiKey: process.env.GEMINI_API_KEY,
+});
 
 export async function POST(req) {
     const { courseId, ...formData } = await req.json();
@@ -44,9 +47,7 @@ export async function POST(req) {
 
 
 
-    const ai = new GoogleGenAI({
-        apiKey: process.env.GEMINI_API_KEY,
-    });
+
     const tools = [
         {
             googleSearch: {
@@ -89,7 +90,7 @@ export async function POST(req) {
 
     console.log(response.candidates[0].content.parts[0].text);
     const RawResp = response?.candidates[0]?.content?.parts[0]?.text;
-    const RawJson = RawResp.replace('```json', '').replace('```', '');
+    const RawJson = RawResp.replace('```json', '').replace('```', '').trim();
     const JSONResp = JSON.parse(RawJson);
     const ImagePrompt = JSONResp.course?.bannerImagePrompt;
     //generate Image
