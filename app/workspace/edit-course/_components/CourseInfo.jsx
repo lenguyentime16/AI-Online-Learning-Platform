@@ -1,4 +1,4 @@
-import { Book, Clock, Loader2Icon, Settings, TrendingUp } from 'lucide-react';
+import { Book, Clock, Loader2Icon, PlayCircle, Settings, TrendingUp } from 'lucide-react';
 import React from 'react'
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
@@ -6,8 +6,9 @@ import axios from 'axios';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
+import Link from 'next/link';
 
-function CourseInfo({ course }) {
+function CourseInfo({ course, viewCourse }) {
     const courseLayout = course?.courseJson?.course;
     const [loading, setLoading] = useState(false);
     const router = useRouter();
@@ -62,15 +63,18 @@ function CourseInfo({ course }) {
                         </section>
                     </div>
                 </div>
-                <Button className={'max-w-sm'} onClick={GenerateCourseContent}
-                    disabled={loading}>
-                    {loading ? <Loader2Icon className='animate-spin' /> : <Settings />} Generate Content</Button>
+                {!viewCourse ?
+                    <Button className={'max-w-sm'} onClick={GenerateCourseContent}
+                        disabled={loading}>
+                        {loading ? <Loader2Icon className='animate-spin' /> : <Settings />}
+                        Generate Content</Button>
+                    : <Link href={'/course/' + course?.cid}><Button><PlayCircle /> Continue Learning</Button></Link>}
             </div>
             <Image src={course?.bannerImageUrl} alt={'banner Image'}
                 width={400}
                 height={400}
                 className='w-full mt-5 md:mt-0 object-cover aspect-auto h-[240px] rounded-2xl' />
-        </div>
+        </div >
     )
 }
 
