@@ -30,14 +30,21 @@ function CourseCard({ course }) {
 
     }
     return (
-        <div className='shadow rounded-xl'>
+        // SỬA LỖI 1: Biến card thành một container flexbox theo chiều dọc
+        <div className='shadow rounded-xl mt-10 flex flex-col'>
             <Image src={course?.bannerImageUrl} alt={course?.name}
                 width={400}
                 height={300}
-                className='w-full aspect-video rounded-xl object-cover' />
-            <div className='p-3 flex flex-col gap-3'>
+                className='w-full aspect-video rounded-t-xl object-cover' />
+
+            {/* SỬA LỖI 2: Thêm flex-grow để phần nội dung này co giãn lấp đầy không gian */}
+            <div className='p-3 flex flex-col gap-3 flex-grow'>
                 <h2 className='font-bold text-lg'>{courseJson?.name}</h2>
                 <p className='line-clamp-3 text-gray-400 text-sm'>{courseJson?.description}</p>
+            </div>
+
+            {/* SỬA LỖI 3: Tách phần footer ra để nó luôn được đẩy xuống dưới cùng */}
+            <div className='p-3 pt-0'>
                 <div className='flex justify-between items-center'>
                     <h2 className='flex items-center text-sm gap-2'><Book className='text-primary h-5 w-5' />{courseJson?.noOfChapters} Chapters</h2>
                     {course?.courseContent?.length ? <Button size={'sm'}
