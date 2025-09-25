@@ -12,6 +12,7 @@ function CourseInfo({ course, viewCourse }) {
     const courseLayout = course?.courseJson?.course;
     const [loading, setLoading] = useState(false);
     const router = useRouter();
+    const hasContent = Array.isArray(course?.courseContent) && course?.courseContent?.length > 0;
 
     const GenerateCourseContent = async () => {
 
@@ -63,7 +64,7 @@ function CourseInfo({ course, viewCourse }) {
                         </section>
                     </div>
                 </div>
-                {!viewCourse ?
+                {!(viewCourse || hasContent) ?
                     <Button className={'max-w-sm'} onClick={GenerateCourseContent}
                         disabled={loading}>
                         {loading ? <Loader2Icon className='animate-spin' /> : <Settings />}
